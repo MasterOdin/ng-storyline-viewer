@@ -51,7 +51,7 @@ export class StorylineListComponent implements OnInit {
             else {
               return 0;
             }
-          }).map(val => val[0]).slice(0, 5)
+          }).map(val => val[0])
         });
       }
     }).unsubscribe();

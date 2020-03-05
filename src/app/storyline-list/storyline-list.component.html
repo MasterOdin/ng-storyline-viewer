@@ -16,7 +16,7 @@
     </div>
     <div class="concepts">
       <ul>
-        <li *ngFor="let concept of storyline.concepts">
+        <li *ngFor="let concept of storyline.concepts.slice(0, 5)">
           {{concept}}
         </li>
       </ul>
