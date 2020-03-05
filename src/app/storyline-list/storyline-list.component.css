@@ -1,0 +1,17 @@
+a:visited {
+  color: blue;
+}
+
+.storyline {
+  border: 1px solid black;
+  display: flex;
+  margin-bottom: 3px;
+}
+
+.storyline > div {
+  padding: 10px;
+}
+
+.storyline > div:not(:last-child) {
+  border-right: 1px solid black;
+}

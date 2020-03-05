@@ -1,0 +1,32 @@
+
+<div
+  class="storylines"
+  infiniteScroll
+    [infiniteScrollDistance]="1"
+    [infiniteScrollThrottle]="50"
+    (scrolled)="onScroll()"
+>
+  <div
+    class="storyline"
+    *ngFor="let storyline of storylines; index as i;"
+  >
+    <div>
+      {{ storyline.articles.length }}<br />
+      <a [routerLink]="['/storyline', i]">Open</a>
+    </div>
+    <div class="concepts">
+      <ul>
+        <li *ngFor="let concept of storyline.concepts">
+          {{concept}}
+        </li>
+      </ul>
+    </div>
+    <div class="articles">
+      <ul>
+        <li *ngFor="let article of storyline.articles.slice(0, 5)">
+          {{ article.title }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

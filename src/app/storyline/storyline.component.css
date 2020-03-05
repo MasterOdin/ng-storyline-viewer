@@ -1,0 +1,16 @@
+a {
+  text-decoration: underline;
+  color: blue;
+  cursor: pointer;
+}
+
+.article {
+  border: 1px solid;
+  margin-bottom: 3px;
+  padding: 3px;
+}
+
+.article-title {
+  font-weight: bold;
+  font-size: 18px;
+}
