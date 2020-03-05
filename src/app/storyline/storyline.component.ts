@@ -21,11 +21,10 @@ export class StorylineComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
-      this.storylineService.getStorylines(
-        +params.get('storylineId'),
-        1
-      ).subscribe(storylines => {
-        this.storyline = storylines[0];
+      this.storylineService.getStoryline(
+        +params.get('storylineId')
+      ).subscribe(storyline => {
+        this.storyline = storyline || {articles: []}
       });
     });
   }

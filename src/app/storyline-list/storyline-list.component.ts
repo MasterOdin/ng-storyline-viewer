@@ -19,11 +19,11 @@ export class StorylineListComponent implements OnInit {
 
   ngOnInit() {
     this.start = 0;
-    this.getStorylines();
+    this.getStorylines('getLoadedStorylines');
   }
 
-  getStorylines() {
-    this.storylinesService.getStorylines(
+  getStorylines(method: string) {
+    this.storylinesService[method](
       this.start,
       this.count
     ).subscribe((storylines: Storyline[]) => {
@@ -59,6 +59,6 @@ export class StorylineListComponent implements OnInit {
   }
   
   onScroll() {
-    this.getStorylines();
+    this.getStorylines('getMoreStorylines');
   }
 }
