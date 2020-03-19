@@ -1,5 +1,25 @@
+<mat-table [dataSource]="storylines" class="mat-elevation-z8">
+  <ng-container matColumnDef="count">
+    <mat-header-cell *matHeaderCellDef> Count </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.articles.count}} </mat-cell>
+  </ng-container>
 
-<div
+  <ng-container matColumnDef="concepts">
+    <mat-header-cell *matHeaderCellDef> Concepts </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <ul>
+        <li *ngFor="let concept of element.concepts.slice(0, 5)">
+          {{concept}}
+        </li>
+      </ul>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+<!--
+  <div
   class="storylines"
   infiniteScroll
     [infiniteScrollDistance]="1"
@@ -30,3 +50,4 @@
     </div>
   </div>
 </div>
+-->

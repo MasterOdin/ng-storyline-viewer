@@ -13,6 +13,8 @@ export class StorylineListComponent implements OnInit {
 
   storylines: {articles: Article[], concepts: Concept[]}[] = [];
 
+  displayedColumns: ['count', 'concepts'];
+
   constructor(
     private storylinesService: StorylinesService
   ) {}
