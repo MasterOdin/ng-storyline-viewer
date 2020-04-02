@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
 import { Storyline } from './types';
-import sample_data_small from '../assets/sample_data_small';
+import sample_data_small from '../assets/sample_data_small.json';
 
 @Injectable()
 export class StorylinesService {
   haveLoaded = 0;
-  count = 5;
+  count = 10;
+
   loadedStorylines: Storyline[] = [];
 
   constructor() {

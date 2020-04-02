@@ -12,7 +12,8 @@ export interface Article {
   score: number;
   date: string;
   url: string;
-  country: string;
+  country?: string;
+  categories: {[key: string]: any};
   persons: Concept[];
   companies: Concept[];
   organizations: Concept[];
@@ -24,4 +25,11 @@ export interface Article {
 
 export interface Storyline {
   articles: Article[];
+}
+
+export interface Filter {
+  persons: Set<string>;
+  companies: Set<string>;
+  organizations: Set<string>;
+  locations: Set<string>;
 }

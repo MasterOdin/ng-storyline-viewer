@@ -1,0 +1,41 @@
+
+
+#filters {
+  height: 130px;
+  display: flex;
+  margin-bottom: 30px;
+}
+
+.filter-title {
+  margin-left: 15px;
+}
+
+.filter {
+  padding: 5px;
+  height: 100px;
+  border: 1px solid black;
+  overflow-y: scroll;
+}
+
+table {
+  width: 100%;
+}
+
+.storylines-table-list {
+  margin-left: 0px;
+  padding-left: 0px;
+}
+
+#views {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+#views > div {
+  border: 1px solid black;
+}
+
+.view-selected {
+  color: white;
+  background-color: black;
+}

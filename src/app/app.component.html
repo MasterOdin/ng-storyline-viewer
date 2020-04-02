@@ -1,3 +1,148 @@
-<div class="container">
-  <router-outlet></router-outlet>
+<div
+  #storylines
+  id="storylines"
+  style="display: block"
+>
+
+  <div #views id="views">
+    <div (click)="selectView($event, 'all')" class='view-selected'>All Storylines</div>
+    <div
+      *ngFor="let item of createdViews | keyvalue"
+      (click)="selectView($event, item.key)"
+      class="{{ currentView === item.key ? 'view-selected': ''}}"
+    >
+      {{ item.key }}
+    </div>
+    <div id='views-plus' (click)="addView()">+</div>
+  </div>
+
+  <div #filters id='filters' style='display: none;'>
+    <div class='filter-box'>
+      <div class='filter-title'>
+        <span style="font-weight: bold">People</span> ({{ storylinesFilter.persons.size }}) <a href='#' (click)="selectAll('persons')">(Select All)</a>
+      </div>
+      <div class='filter'>
+        <div *ngFor="let person of sortSet(storylinesFilter.persons)">
+          <input
+            type='checkbox'
+            id='checkbox-{{person}}'
+            [checked]="currentView !== 'all' && createdViews[currentView].persons.has(person)"
+            (change)="applyFilter($event, 'persons', person)"
+          />
+          <label for='checkbox-{{person}}'>{{ person }}</label>
+        </div>
+      </div>
+    </div>
+    <div class='filter-box'>
+      <div class='filter-title'>
+        <span style="font-weight: bold;">Companies</span> ({{ storylinesFilter.companies.size }}) <a href='#' (click)="selectAll('companies')">(Select All)</a>
+      </div>
+      <div class='filter'>
+        <div *ngFor="let company of sortSet(storylinesFilter.companies)">
+          <input
+            type='checkbox'
+            id='checkbox-{{company}}'
+            [checked]="currentView !== 'all' && createdViews[currentView].companies.has(company)"
+            (change)="applyFilter($event, 'companies', company)"
+          />
+          <label for='checkbox-{{company}}'>{{ company }}</label>
+        </div>
+      </div>
+    </div>
+    <div class='filter-box'>
+      <div class='filter-title'>
+        <span style="font-weight: bold;">Organizations</span> ({{ storylinesFilter.organizations.size }}) <a href='#' (click)="selectAll('organizations')">(Select All)</a>
+      </div>
+      <div class='filter'>
+        <div *ngFor="let organization of sortSet(storylinesFilter.organizations)">
+          <input
+            type='checkbox'
+            id='checkbox-{{organization}}'
+            [checked]="currentView !== 'all' && createdViews[currentView].organizations.has(organization)"
+            (change)="applyFilter($event, 'organizations', organization)"
+          />
+          <label for='checkbox-{{organization}}'>{{ organization }}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table
+    mat-table
+    [dataSource]="storylinesDataSource"
+    class="mat-elevation-z8 storylines-table"
+    infiniteScroll
+      [infiniteScrollDistance]="1"
+      [infiniteScrollThrottle]="50"
+      (scrolled)="onScroll()"
+  >
+    <ng-container matColumnDef="count">
+      <th mat-header-cell *matHeaderCellDef> Count </th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.articles.length }}<br />
+        <a [routerLink]="" (click)="openStoryline(element.position)">Open</a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="concepts">
+      <th mat-header-cell *matHeaderCellDef> Concepts </th>
+      <td mat-cell *matCellDef="let element">
+        <ul class='storylines-table-list'>
+          <li *ngFor="let concept of element.concepts.slice(0, 5)">
+            {{concept}}
+          </li>
+        </ul>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="drivers">
+      <th mat-header-cell *matHeaderCellDef> Drivers </th>
+      <td mat-cell *matCellDef="let element">
+        <ul class='storylines-table-list'>
+          <li *ngFor="let driver of element.drivers.slice(0, 5)">
+            {{ driver }}
+          </li>
+        </ul>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="articles">
+      <th mat-header-cell *matHeaderCellDef> Articles </th>
+      <td mat-cell *matCellDef="let element">
+        <ul class='storylines-table-list'>
+          <li *ngFor="let article of element.articles.slice(0, 5)">
+            {{ article.title }}
+          </li>
+        </ul>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
+
+<div
+  #storylineArticles
+  id="storyline-articles"
+  style="display: none"
+>
+  <a [routerLink]="" (click)="closeStoryline()">Close</a><br /><br />
+  <table mat-table [dataSource]="articles" class="mat-elevation-z8">
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef> Title </th>
+      <td mat-cell *matCellDef="let element" [ngSwitch]="!!element.url">
+        <span *ngSwitchCase="true"><a href="{{ element.url }}" target="_blank">{{ element.title }}</a></span>
+        <span *ngSwitchCase="false">{{ element.title }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="desc">
+      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <td mat-cell *matCellDef="let element">{{ element.doc_abstract }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedStorylineColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedStorylineColumns;"></tr>
+  </table>
 </div>
