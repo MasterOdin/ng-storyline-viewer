@@ -33,3 +33,17 @@ export interface Filter {
   organizations: Set<string>;
   locations: Set<string>;
 }
+
+export interface StorylineTableElement {
+  position: number;
+  articles: Article[],
+  concepts: string[],
+  drivers: string[]
+}
+
+export interface View {
+  persons: Set<string>;
+  companies: Set<string>;
+  organizations: Set<string>;
+  locations: Set<string>;
+}

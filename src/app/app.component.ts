@@ -1,21 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { StorylinesService } from './storylines.service';
-import { Storyline, Article, Concept, Filter } from './types';
-
-export interface StorylineTableElement {
-  position: number;
-  articles: Article[],
-  concepts: string[],
-  drivers: string[]
-}
-
-export interface View {
-  persons: Set<string>;
-  companies: Set<string>;
-  organizations: Set<string>;
-  locations: Set<string>;
-}
+import { Storyline, Article, Filter, StorylineTableElement, View } from './types';
 
 @Component({
   selector: 'ng-storyline-viewer',
