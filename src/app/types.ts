@@ -27,13 +27,6 @@ export interface Storyline {
   articles: Article[];
 }
 
-export interface Filter {
-  persons: Set<string>;
-  companies: Set<string>;
-  organizations: Set<string>;
-  locations: Set<string>;
-}
-
 export interface StorylineTableElement {
   position: number;
   articles: Article[],
@@ -42,8 +35,7 @@ export interface StorylineTableElement {
 }
 
 export interface View {
-  persons: Set<string>;
+  people: Set<string>;
   companies: Set<string>;
   organizations: Set<string>;
-  locations: Set<string>;
 }

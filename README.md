@@ -8,6 +8,13 @@ npm install ng-storyline-viewer
 
 ## Usage
 
-```typescript
-// TODO
+The app surfaces itself through the following tag:
+
+```html
+<ng-storyline-viewer>Loading...</ng-storyline-viewer>
 ```
+
+On the element, it surfaces the following DOM events:
+
+* storyline-views
+* storyline-driver

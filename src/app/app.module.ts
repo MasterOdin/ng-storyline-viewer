@@ -4,6 +4,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { MatTableModule } from '@angular/material/table';
+import { MatChipsModule } from '@angular/material/chips';
 
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
@@ -17,6 +18,7 @@ import { CachingInterceptor } from './caching-interceptor';
     BrowserModule,
     InfiniteScrollModule,
     MatTableModule,
+    MatChipsModule
   ],
   declarations: [
     StorylineViewerComponent

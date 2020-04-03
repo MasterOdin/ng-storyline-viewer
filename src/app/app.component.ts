@@ -1,7 +1,7 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { StorylinesService } from './storylines.service';
-import { Storyline, Article, Filter, StorylineTableElement, View } from './types';
+import { Storyline, Article, StorylineTableElement, View } from './types';
 
 @Component({
   selector: 'ng-storyline-viewer',
@@ -11,11 +11,10 @@ import { Storyline, Article, Filter, StorylineTableElement, View } from './types
 export class StorylineViewerComponent implements OnInit {
   displayedColumns: string[] = ['count', 'concepts', 'drivers', 'articles'];
 
-  storylinesFilter: Filter = {
-    persons: new Set<string>(),
+  filters: View = {
+    people: new Set<string>(),
     companies: new Set<string>(),
-    organizations: new Set<string>(),
-    locations: new Set<string>()
+    organizations: new Set<string>()
   };
 
   storylines: StorylineTableElement[] = [];
@@ -28,15 +27,17 @@ export class StorylineViewerComponent implements OnInit {
   articles: Article[] = [];
   @ViewChild('storylineArticles') storylineArticlesElem: ElementRef;
 
-  @ViewChild('views') viewElem: ElementRef;
-  @ViewChild('filters') filtersElem: ElementRef;
+  @ViewChild('viewsElem') viewElem: ElementRef;
+  @ViewChild('filtersElem') filtersElem: ElementRef;
 
-  createdViews: {[key: string]: View} = {
-  };
-
+  @Input()
   currentView = 'all';
 
-  //displayedColumns: ['count'];
+  @Input()
+  serviceUrl = '../assets/sample_data_small';
+
+  @Input()
+  views: {[key: string]: View} = {};
 
   constructor(
     private storylinesService: StorylinesService,
@@ -51,15 +52,15 @@ export class StorylineViewerComponent implements OnInit {
       }
 
       if (
-        this.createdViews[this.currentView].persons.size === 0
-        && this.createdViews[this.currentView].companies.size === 0
-        && this.createdViews[this.currentView].organizations.size === 0
+        this.views[this.currentView].people.size === 0
+        && this.views[this.currentView].companies.size === 0
+        && this.views[this.currentView].organizations.size === 0
       ) {
         return true;
       }
       for (let concept of data.concepts) {
-        for (let type of ['persons', 'companies', 'organizations']) {
-          if (this.createdViews[this.currentView][type].has(concept)) {
+        for (let filter in this.filters) {
+          if (this.views[this.currentView][filter].has(concept)) {
             return true;
           }
         }
@@ -77,13 +78,13 @@ export class StorylineViewerComponent implements OnInit {
         const concepts: {[key: string]: number} = {};
         const drivers: {[key: string]: number} = {};
         for (let article of storyline.articles) {
-          for (let key of ['companies', 'persons', 'organizations', 'locations']) {
-            for (let concept of article[key]) {
+          for (let filter in this.filters) {
+            for (let concept of article[filter === 'people' ? 'persons' : filter]) {
               if (!concepts[concept.name]) {
                 concepts[concept.name] = 0;
               }
               concepts[concept.name] += concepts.count;
-              this.storylinesFilter[key].add(concept.name);
+              this.filters[filter].add(concept.name);
             }
           }
           for (let driver of article.drivers) {
@@ -144,25 +145,28 @@ export class StorylineViewerComponent implements OnInit {
     return Array.from(set).sort();
   }
 
+  getObjectKeys(obj: object) {
+    return Object.keys(obj);
+  }
+
   applyFilter(event: InputEvent, type: string, value: string) {
     if ((event.target as HTMLInputElement).checked) {
-      this.createdViews[this.currentView][type].add(value);
+      this.views[this.currentView][type].add(value);
     }
     else {
-      this.createdViews[this.currentView][type].delete(value);
+      this.views[this.currentView][type].delete(value);
     }
-    this.storylinesDataSource.filter = JSON.stringify(this.createdViews[this.currentView]);
+    this.storylinesDataSource.filter = JSON.stringify(this.views[this.currentView]);
     this.dispatchViewEvent();
   }
 
   addView() {
     const viewName = `View ${this.viewElem.nativeElement.children.length - 1}`;
     this.currentView = viewName;
-    this.createdViews[viewName] = {
-      persons: new Set(),
+    this.views[viewName] = {
+      people: new Set(),
       companies: new Set(),
-      organizations: new Set(),
-      locations: new Set()
+      organizations: new Set()
     };
     this.selectView(null, this.currentView);
     this.dispatchViewEvent();
@@ -171,7 +175,7 @@ export class StorylineViewerComponent implements OnInit {
   selectView(event: MouseEvent | null, view: string) {
     this.currentView = view;
     this.filtersElem.nativeElement.style.display = (this.currentView !== 'all') ? 'flex' : 'none';
-    this.storylinesDataSource.filter = JSON.stringify(this.createdViews[this.currentView] || {});
+    this.storylinesDataSource.filter = JSON.stringify(this.views[this.currentView] || {});
     if (document.querySelector('.view-selected')) {
       document.querySelector('.view-selected').classList.remove('view-selected');
     }
@@ -184,17 +188,25 @@ export class StorylineViewerComponent implements OnInit {
   dispatchViewEvent() {
     this.element.nativeElement.dispatchEvent(new CustomEvent('storyline-views', {
       detail: {
-        filters: this.createdViews,
+        views: this.views,
         currentView: this.currentView
       }
     }));
   }
 
   selectAll(category: string) {
-    for (let concept of this.storylinesFilter[category]) {
-      this.createdViews[this.currentView][category].add(concept);
+    for (let concept of this.filters[category]) {
+      this.views[this.currentView][category].add(concept);
     }
-    this.storylinesDataSource.filter = JSON.stringify(this.createdViews[this.currentView]);
+    this.storylinesDataSource.filter = JSON.stringify(this.views[this.currentView]);
     this.dispatchViewEvent();
+  }
+
+  driverSelect(driver: string) {
+    this.element.nativeElement.dispatchEvent(new CustomEvent('storyline-driver', {
+      detail: {
+        driver
+      }
+    }));
   }
 }
