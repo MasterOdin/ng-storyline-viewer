@@ -1,24 +1,27 @@
-# StorylineViewer
+# ngx-storyline-viewer
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.0.
+## Installation
 
-## Code scaffolding
+```bash
+npm install @cisl/ngx-storyline-viewer
+```
 
-Run `ng generate component component-name --project storyline-viewer` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project storyline-viewer`.
-> Note: Don't forget to add `--project storyline-viewer` or else it will be added to the default project in your `angular.json` file. 
+## Usage
 
-## Build
+The app surfaces itself through the following tag:
 
-Run `ng build storyline-viewer` to build the project. The build artifacts will be stored in the `dist/` directory.
+```html
+<ngx-storyline-viewer serviceUrl="http://localhost:3000">Loading...</ng-storyline-viewer>
+```
 
-## Publishing
+The element supports the following options:
 
-After building your library with `ng build storyline-viewer`, go to the dist folder `cd dist/storyline-viewer` and run `npm publish`.
+* `serviceUrl: string` (required)
+* `count: number` (default: 10)
+* `currentView: string` (default: 'all')
+* `views: {[key: string]: View}` (default: `{}`)
 
-## Running unit tests
+On the element, it surfaces the following DOM events:
 
-Run `ng test storyline-viewer` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+* storyline-views
+* storyline-driver

@@ -30,12 +30,11 @@ export class StorylineViewerComponent implements OnInit {
   @ViewChild('viewsElem') viewElem: ElementRef;
   @ViewChild('filtersElem') filtersElem: ElementRef;
 
-  @Input() currentView = 'all';
-
   @Input() serviceUrl: string;
 
   @Input() count = 10;
 
+  @Input() currentView = 'all';
   @Input() views: {[key: string]: View} = {};
 
   constructor(

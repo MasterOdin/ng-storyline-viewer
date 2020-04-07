@@ -1,9 +1,9 @@
-# ng-storyline-viewer
+# ngx-storyline-viewer
 
 ## Installation
 
 ```bash
-npm install ng-storyline-viewer
+npm install @cisl/ngx-storyline-viewer
 ```
 
 ## Usage
@@ -11,14 +11,14 @@ npm install ng-storyline-viewer
 The app surfaces itself through the following tag:
 
 ```html
-<ng-storyline-viewer url="http://localhost:3000">Loading...</ng-storyline-viewer>
+<ngx-storyline-viewer serviceUrl="http://localhost:3000">Loading...</ng-storyline-viewer>
 ```
 
 The element supports the following options:
 
-On the element, it surfaces the following DOM events:
-
-* storyline-views
-* storyline-driver
+* `serviceUrl: string` (required)
+* `count: number` (default: 10)
+* `currentView: string` (default: 'all')
+* `views: {[key: string]: View}` (default: `{}`)
 
 ## Development
