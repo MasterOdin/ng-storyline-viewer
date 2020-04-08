@@ -21,4 +21,17 @@ The element supports the following options:
 * `currentView: string` (default: 'all')
 * `views: {[key: string]: View}` (default: `{}`)
 
+A fully defined example:
+
+```html
+<ngx-storyline-viewer
+    serviceUrl="http://localhost:3000"
+    count="10"
+    currentView="all"
+    [views]="{'View1': {'people': ['A.J. Brown']}}"
+>
+    Loading...
+</ngx-storyline-viewer>
+```
+
 ## Development

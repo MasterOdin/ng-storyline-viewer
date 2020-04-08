@@ -45,6 +45,19 @@ export class StorylineViewerComponent implements OnInit {
 
   ngOnInit() {
     this.storylineViewerService.url = this.serviceUrl;
+    for (const key in this.views) {
+      for (const filter in this.filters) {
+        if (Array.isArray(this.views[key][filter])) {
+          this.views[key][filter] = new Set(this.views[key][filter]);
+        }
+        else if (!this.views[key][filter]) {
+          this.views[key][filter] = new Set();
+        }
+        this.filters[filter] = new Set([...this.filters[filter], ...this.views[key][filter]]);
+      }
+    }
+
+
     this.storylinesDataSource.filterPredicate = ((data: StorylineTableElement, filter): boolean => {
       if (this.currentView === 'all') {
         return true;
