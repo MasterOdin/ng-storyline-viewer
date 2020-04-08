@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { StorylineViewerService } from './storyline-viewer.service';
 import { Storyline, Article, StorylineTableElement, View } from './types';
@@ -36,6 +36,9 @@ export class StorylineViewerComponent implements OnInit {
 
   @Input() currentView = 'all';
   @Input() views: {[key: string]: View} = {};
+
+  @Output() viewEvent: EventEmitter<{currentView: string, views: {[key: string]: View}}> = new EventEmitter();
+  @Output() driverEvent: EventEmitter<string> = new EventEmitter();
 
   constructor(
     private storylineViewerService: StorylineViewerService,
@@ -203,12 +206,10 @@ export class StorylineViewerComponent implements OnInit {
   }
 
   dispatchViewEvent() {
-    this.element.nativeElement.dispatchEvent(new CustomEvent('storyline-views', {
-      detail: {
-        views: this.views,
-        currentView: this.currentView
-      }
-    }));
+    this.viewEvent.emit({
+      views: this.views,
+      currentView: this.currentView
+    });
   }
 
   selectAll(category: string) {
@@ -220,10 +221,6 @@ export class StorylineViewerComponent implements OnInit {
   }
 
   driverSelect(driver: string) {
-    this.element.nativeElement.dispatchEvent(new CustomEvent('storyline-driver', {
-      detail: {
-        driver
-      }
-    }));
+    this.driverEvent.emit(driver);
   }
 }
