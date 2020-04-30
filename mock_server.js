@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-const data = require('./data/sample_spa_data.json');
+const data = require('./data/sample_spa_news.json');
 
 app.use(cors());
 

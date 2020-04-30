@@ -1,0 +1,25 @@
+<div>
+<table *ngIf="detailDatasource" mat-table [dataSource]="detailDatasource" class="mat-elevation-z8">
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef> Title </th>
+      <td mat-cell *matCellDef="let element" [ngSwitch]="!!element.url" style="width:30%">
+        <span *ngSwitchCase="true"><a [href]="element.url" target="_blank">{{ element.title | titlecase }}</a></span>
+        <span *ngSwitchCase="false">{{ element.title | titlecase }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef> Published </th>
+      <td mat-cell *matCellDef="let element" style="width: 10%">{{ element.date | date }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="desc">
+      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <td mat-cell *matCellDef="let element">{{ element.doc_abstract | sanitizeAbstract }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedStorylineColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedStorylineColumns;"></tr>
+  </table>
+  <mat-paginator style="width:100%" #paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+</div>

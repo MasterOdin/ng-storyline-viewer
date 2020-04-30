@@ -1,7 +1,9 @@
+import * as _ from 'lodash';
+
 export interface Entity {
   name: string;
   relevance: number;
-  sentiment: number;
+  sentiment?: number;
   count: number;
 }
 
@@ -13,7 +15,7 @@ export interface Article {
   date: string;
   url: string;
   country?: string;
-  categories: {[key: string]: any};
+  categories: Entity[];
   persons: Entity[];
   companies: Entity[];
   organizations: Entity[];
@@ -37,11 +39,45 @@ export interface StorylineTableElement {
   position: number;
   articles: Article[],
   concepts: string[],
-  drivers: string[]
+  drivers: string[],
+  update: Date
 }
 
 export interface View {
   people: Set<string>;
   companies: Set<string>;
   organizations: Set<string>;
+  categories: Set<string>;
+}
+
+export function filterArticles(articles: Article[], view: View): Article[] {
+  const retval = [];  
+  let done;
+  for(const a of articles) {
+    done = false;
+    for(const k of _.keys(view)) {
+      const datak = getDataKeyFromViewKey(k);
+      for(const v of view[k]) {
+        if(_.some(a[datak], elem => elem.name === v)) {
+          done = true;
+          retval.push(a);
+          break;
+        }
+      }
+      if(done) { break; }
+    }
+  }
+  return retval;
+}
+
+export function filterStorylineArticles(data: StorylineTableElement, view: View): Article[] {
+  return filterArticles(data.articles, view);
+}
+
+export function filterArticleCount(data: StorylineTableElement, view: View): number {
+  return filterArticles(data.articles, view).length;
+}
+
+export function getDataKeyFromViewKey(key: string): string {
+  return (key === 'people') ? 'persons' : key;
 }

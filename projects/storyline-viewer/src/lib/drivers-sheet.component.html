@@ -1,0 +1,3 @@
+<mat-chip-list>
+    <mat-chip *ngFor="let d of drivers" (click)="onDriverClick(d)">{{d | titlecase }}</mat-chip>
+</mat-chip-list>
