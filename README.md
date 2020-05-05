@@ -1,5 +1,7 @@
 # ngx-storyline-viewer
 
+![npm (scoped)](https://img.shields.io/npm/v/@cisl/ngx-storyline-viewer) ![Node.js CI](https://github.com/cislrpi/ngx-storyline-viewer/workflows/Node.js%20CI/badge.svg)
+
 ## Installation
 
 ```bash
