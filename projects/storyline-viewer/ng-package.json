@@ -4,7 +4,8 @@
   "lib": {
     "entryFile": "src/public-api.ts",
     "umdModuleIds": {
-      "ngx-infinite-scroll": "ngxInfiniteScroll"
+      "ngx-infinite-scroll": "ngxInfiniteScroll",
+      "lodash": "lodash"
     }
   }
 }
