@@ -1,6 +1,7 @@
 # ngx-storyline-viewer
 
-![npm (scoped)](https://img.shields.io/npm/v/@cisl/ngx-storyline-viewer) ![Node.js CI](https://github.com/cislrpi/ngx-storyline-viewer/workflows/Node.js%20CI/badge.svg)
+[![npm (scoped)](https://img.shields.io/npm/v/@cisl/ngx-storyline-viewer)](https://npmjs.com/package/@cisl/ngx-storyline-viewer)
+[![Node.js CI](https://github.com/cislrpi/ngx-storyline-viewer/workflows/Node.js%20CI/badge.svg)](https://github.com/cislrpi/ngx-storyline-viewer/actions?query=workflow%3A%22Node.js+CI%22)
 
 ## Installation
 
