@@ -345,6 +345,7 @@ export class StorylineViewerComponent implements OnInit, AfterViewInit {
         this._viewKeys.splice(idx, 1, ret);
       }
       this.currentView = ret;
+      this.dispatchViewEvent();
     }
   }
 
@@ -354,6 +355,7 @@ export class StorylineViewerComponent implements OnInit, AfterViewInit {
       delete this.views[this.currentView];
       this.currentView = 'all';
       this.storyViews.selectedIndex = 0;
+      this.dispatchViewEvent();
     }
   }
 
