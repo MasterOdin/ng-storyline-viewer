@@ -55,7 +55,7 @@
         <mat-list-option 
           *ngFor="let element of this.filterOptions[filter].pipeline$ | async" 
           [value]="element"
-          [selected]="(currentView != 'all') && views[currentView][filter].has(element)">
+          [selected]="(currentView != 'all') && isSelected(currentView, filter, element)">
           {{element | titlecase}}
         </mat-list-option>
       </mat-selection-list>

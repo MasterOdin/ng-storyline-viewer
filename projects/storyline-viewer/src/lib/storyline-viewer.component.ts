@@ -10,6 +10,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { DriversSheet } from './drivers-sheet.component';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { scan } from 'rxjs/operators';
+import * as _ from 'lodash';
 
 export interface FilterScrollStatus {
     offset: number;
@@ -47,10 +48,10 @@ export class StorylineViewerComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['count', 'concepts', 'drivers', 'articles'];
 
   filters: View = {
-    people: new Set<string>(),
-    companies: new Set<string>(),
-    organizations: new Set<string>(),
-    categories: new Set<string>()
+    people: [],
+    companies: [],
+    organizations: [],
+    categories: []
   };
 
   filterOptions: {[key: string]: FilterScrollStatus};
@@ -100,10 +101,10 @@ export class StorylineViewerComponent implements OnInit, AfterViewInit {
 
   onChangeSelection(filter: string, event: MatSelectionListChange) {
     if (event.option.selected) {
-      this.views[this.currentView][filter].add(event.option.value);
+      this.views[this.currentView][filter].push(event.option.value);
     }
     else {
-      this.views[this.currentView][filter].delete(event.option.value);
+      _.pullAll(this.views[this.currentView][filter], [event.option.value]);
     }
     this.storylinesDataSource.filter = JSON.stringify(this.views[this.currentView]);
     this.dispatchViewEvent();    
@@ -158,13 +159,10 @@ export class StorylineViewerComponent implements OnInit, AfterViewInit {
     for (const key in this.views) {
       this._viewKeys.push(key);
       for (const filter in this.filters) {
-        if (Array.isArray(this.views[key][filter])) {
-          this.views[key][filter] = new Set(this.views[key][filter]);
+        if (!this.views[key][filter]) {
+          this.views[key][filter] = [];
         }
-        else if (!this.views[key][filter]) {
-          this.views[key][filter] = new Set();
-        }
-        this.filters[filter] = new Set([...this.filters[filter], ...this.views[key][filter]]);
+        this.filters[filter] = _.uniq([...this.filters[filter], ...this.views[key][filter]]);
       }
     }
     this.resetAllFilters();
@@ -175,15 +173,15 @@ export class StorylineViewerComponent implements OnInit, AfterViewInit {
       }
 
       if (
-        this.views[this.currentView].people.size === 0
-        && this.views[this.currentView].companies.size === 0
-        && this.views[this.currentView].organizations.size === 0
+        this.views[this.currentView].people.length === 0
+        && this.views[this.currentView].companies.length === 0
+        && this.views[this.currentView].organizations.length === 0
       ) {
         return true;
       }
       for (let concept of data.concepts) {
         for (let filter in this.filters) {
-          if (this.views[this.currentView][filter].has(concept)) {
+          if (_.includes(this.views[this.currentView][filter], concept)) {
             return true;
           }
         }
@@ -217,7 +215,7 @@ export class StorylineViewerComponent implements OnInit, AfterViewInit {
                 concepts[concept.name] = 0;
               }
               concepts[concept.name] += concepts.count;
-              this.filters[filter].add(concept.name);
+              this.filters[filter].push(concept.name);
             }
           }
           for (let driver of article.drivers) {
@@ -270,8 +268,8 @@ export class StorylineViewerComponent implements OnInit, AfterViewInit {
     this.getStorylines();
   }
 
-  sortSet(set: Set<string>) {
-    return Array.from(set).sort();
+  sortSet(set: string[]) {
+    return _.sortBy(set);
   }
 
   getObjectKeys(obj: object) {
@@ -288,10 +286,10 @@ export class StorylineViewerComponent implements OnInit, AfterViewInit {
     const viewName = 'View ' + idx;
     this.currentView = viewName;
     this.views[viewName] = {
-      people: new Set(),
-      companies: new Set(),
-      organizations: new Set(),
-      categories: new Set()
+      people: [],
+      companies: [],
+      organizations: [],
+      categories: []
     };
     this.dispatchViewEvent();
   }
@@ -311,7 +309,7 @@ export class StorylineViewerComponent implements OnInit, AfterViewInit {
 
   selectAll(category: string) {
     for (let concept of this.filters[category]) {
-      this.views[this.currentView][category].add(concept);
+      this.views[this.currentView][category] = this.filters[category].slice();
     }
     this.storylinesDataSource.filter = JSON.stringify(this.views[this.currentView]);
     this.dispatchViewEvent();
@@ -369,5 +367,9 @@ export class StorylineViewerComponent implements OnInit, AfterViewInit {
     if(this.views[this.currentView]) {
       return Array.from(this.views[this.currentView][filter]).join(', ');
     } else { return ''; }
+  }
+
+  isSelected(currentView: string, filter: string, value: string) {
+    return _.includes(this.views[currentView][filter], value);
   }
 }
