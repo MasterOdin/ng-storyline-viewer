@@ -44,10 +44,10 @@ export interface StorylineTableElement {
 }
 
 export interface View {
-  people: Set<string>;
-  companies: Set<string>;
-  organizations: Set<string>;
-  categories: Set<string>;
+  people: string[];
+  companies: string[];
+  organizations: string[];
+  categories: string[];
 }
 
 export function filterArticles(articles: Article[], view: View): Article[] {

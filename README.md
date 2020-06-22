@@ -71,7 +71,7 @@ To work on the project, you need to run two pieces:
 1. The mock SPA endpoint: `node mock_server.js`
 2. The Angular demo project: `npm start`
 
-Whenever any changes happen to the `storyline-viewer project`, you must re-build it by doing: `npm build`.
+Whenever any changes happen to the `storyline-viewer project`, you must re-build it by doing: `npm run build`.
 
 ## Contributing
 
