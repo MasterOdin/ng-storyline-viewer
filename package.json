@@ -19,7 +19,7 @@
     "@angular/router": "^9.0.6",
     "core-js": "^3.6.4",
     "lodash": "^4.17.15",
-    "ngx-infinite-scroll": "^8.0.1",
+    "ngx-infinite-scroll": "^9.0.0",
     "rxjs": "6.5.4",
     "tslib": "^1.11.1",
     "zone.js": "^0.10.2"
